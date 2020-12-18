@@ -1,230 +1,230 @@
-f3 - Fight Flash Fraud
+f3 - Combatir el fraude flash (Fight Flash Fraud)
 ======================
 
-f3 is a simple tool that tests flash cards capacity and performance to
-see if they live up to claimed specifications. It fills the device with
-pseudorandom data and then checks if it returns the same on reading.
+f3 es una herramienta sencilla que prueba la capacidad y el rendimiento 
+de las tarjetas de memoria para ver si cumplen con las especificaciones reclamadas. Llena el 
+dispositivo con datos seudoaleatorios y luego comprueba si son los mismos al ser leídos.
 
-F3 stands for Fight Flash Fraud, or Fight Fake Flash.
+F3 es por las 3 f de su significado en inglés Fight Flash Fraud, or Fight Fake Flash. Combatir el fraude flash.
 
-**Table of Contents**
+**Tabla de contenidos**
 
--  `Examples <#examples>`__
--  `Installation <#installation>`__
--  `Other resources <#other-resources>`__
+-  `Ejemplos <#Ejemplos>`__
+-  `Instalación <#Instalación>`__
+-  `Otros recursos <#Otros recursos>`__
 
-.. _examples:
+.. _Ejemplos:
 
 .. highlight:: bash
 
-Examples
+Ejemplos
 ========
 
-Testing performance with f3read/f3write
+Probando el rendimiento con f3read/f3write
 ---------------------------------------
 
-Use these two programs in this order. f3write will write large files to
-your mounted disk and f3read will check if the flash disk contains
-exactly the written files::
+Utilice estos dos programas en este orden. f3write escribirá archivos grandes 
+en su disco montado y f3read comprobará si el dipositivo flash contiene exactamente 
+los archivos escritos::
 
     $ ./f3write /media/michel/5EBD-5C80/
     $ ./f3read /media/michel/5EBD-5C80/
 
-Please replace "/media/michel/5EBD-5C80/" with the appropriate path. USB
-devices are mounted in "/Volumes" on Macs.
+Por favor, cambien "/media/michel/5EBD-5C80/" por la ruta apropiada. Los 
+dispositivos USB se montan en "/Volumes" en los Mac.
 
-If you have installed f3read and f3write, you can remove the "./" that
-is shown before their names.
+Si ya instalo f3read y f3write, puede eliminar el "./" que 
+aparece antes de sus nombres.
 
-Quick capacity tests with f3probe
+Pruebas rápidas de capacidad con f3probe.
 ---------------------------------
 
-f3probe is the fastest drive test and suitable for large disks because
-it only writes what's necessary to test the drive. It operates directly
-on the (unmounted) block device and needs to be run as a privileged
-user::
+f3probe es la prueba de unidad más rápida y adecuada para discos grandes, ya que 
+solo escribe lo necesario para probar la unidad. Funciona directamente en el 
+dispositivo de bloques (desmontado) y necesita ser ejecutado como (root) 
+un usuario privilegiado::
 
     # ./f3probe --destructive --time-ops /dev/sdb
 
-.. warning:: This will destroy any previously stored data on your disk!
+.. Advertencia:: ¡Esto destruirá cualquier dato almacenado previamente en su disco!
 
-Correcting capacity to actual size with f3fix
+Corregir la capacidad al tamaño real con f3fix
 ---------------------------------------------
 
-f3fix creates a partition that fits the actual size of the fake drive.
-Use f3probe's output to determine the parameters for f3fix::
+f3fix crea una partición que se ajusta al tamaño real de la unidad falsa. 
+Usa la salida de f3probe para determinar los parámetros de f3fix::
 
     # ./f3fix --last-sec=16477878 /dev/sdb
 
-Installation
+Instalación
 ============
 
-Download and Compile
+Descargar y compilar
 --------------------
 
-The files of the stable version of F3 are
-`here <https://github.com/AltraMayor/f3/releases>`__. The
-following command uncompresses the files::
+Los archivos de la versión estable de F3 están
+`aquí <https://github.com/AltraMayor/f3/releases>`__. El 
+siguiente comando descomprime los archivos::
 
     $ unzip f3-8.0.zip
 
 
-Compile stable software on Linux or FreeBSD
+Compilar software estable en Linux o FreeBSD
 -------------------------------------------
 
-To build::
+Para construir::
 
     make
 
-If you want to install f3write and f3read, run the following command::
+Si quiere instalar f3write y f3read, ejecute el siguiente comando::
 
     make install
 
-Compile stable software on Windows/Cygwin
+Compilar la versión estable en Windows/Cygwin
 -----------------------------------------
 
-f3write and f3read can be installed on Windows, but currently f3probe, f3fix,
-and f3brew `require Linux <#the-extra-applications-for-linux>`__.  To use them
-on a Windows machine, use the `Docker Installation <#docker>`__.  For f3write
-and f3read, read on.
+f3write y f3read pueden ser instalados en Windows, pero actualmente f3probe, f3fix 
+y f3brew  `requieren Linux <#Aplicaciones-adicionales-para-Linux>`__.  Para usarlos en una máquina de Windows, 
+use la instalación. `Docker Instalación <#docker>`__.  para f3write 
+y f3read, sigue leyendo.
 
-If you haven't already, install the following Cygwin packages and their dependencies:
+Si aún no lo ha hecho, instale los siguientes paquetes Cygwin y sus dependencias:
 
 - `gcc-core`
 - `make`
 - `libargp-devel`
 
-To build, you need special flags::
+Para construir, necesitas banderas especiales::
 
     export LDFLAGS="$LDFLAGS -Wl,--stack,4000000 -largp"
     make
 
-If you want to install f3write and f3read, run the following command::
+Si quiere instalar f3write y f3read, ejecute el siguiente comando::
 
     make install
 
-Compile stable software on Apple Mac
+Compile software estable en Apple Mac
 ------------------------------------
 
-f3write and f3read can be installed on Mac, but currently f3probe, f3fix, and
-f3brew `require Linux <#the-extra-applications-for-linux>`__.  To use them on
-Mac, use the `Docker Installation <#docker>`__.  For f3write and f3read, read
-on.
+f3write y f3read se pueden instalar en Mac, pero actualmente f3probe, f3fix y 
+f3brew `requieren Linux <#Aplicaciones-adicionales-para-Linux>`__.Para usarlos 
+en Mac, use la `instalación de Docker. <#docker>`__.  Para f3write y f3read, siga 
+leyendo.
 
-Using HomeBrew
+Uso de HomeBrew
 ~~~~~~~~~~~~~~
 
-If you have Homebrew already installed in your computer, the command
-below will install F3::
+Si ya tiene Homebrew instalado en su ordenador, el siguiente comando 
+instalará F3::
 
     brew install f3
 
-Using MacPorts
+Uso de MacPorts
 ~~~~~~~~~~~~~~
 
-If you use MacPorts instead, use the following command::
+Si utiliza MacPorts en su lugar, utilice el siguiente comando::
 
     port install f3
 
-Compiling the latest development version from the source code
+Compilar la última versión de desarrollo a partir del código fuente
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Most of the f3 source code builds fine using XCode, the only dependency
-missing is the GNU C library "argp". You can build argp from scratch, or
-use the version provided by HomeBrew and MacPorts as "argp-standalone"
+La mayoría del código fuente de f3 se construye bien usando XCode, la única 
+dependencia que falta es la biblioteca C de GNU "argp". Puede construir argp 
+desde cero, o usar la versión proporcionada por HomeBrew y MacPorts como "argp-standalone"
 
-The following steps have been tested on OS X El Capitan 10.11.
+Los siguientes pasos han sido probados en OS X El Capitán 10.11.
 
-1) Install Apple command line tools::
+1) Instalar las herramientas de línea de comandos de Apple::
 
        xcode-select --install
 
-See http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/
-for details.
+vea http://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/
+para más detalles.
 
-2) Install Homebrew or MacPorts
+2) Instalar Homebrew o MacPorts
 
    HomeBrew::
 
      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-   See https://brew.sh/ for details.
+   Vea https://brew.sh/ para más detalles.
 
    MacPorts: https://www.macports.org/install.php
 
-3) Install argp library::
+3) Instalar la biblioteca argp::
 
        brew install argp-standalone
 
-   See http://brewformulas.org/ArgpStandalone and
-   https://www.freshports.org/devel/argp-standalone/ for more
-   information.
+   Vea http://brewformulas.org/ArgpStandalone y
+   https://www.freshports.org/devel/argp-standalone/ para más
+   informaciónn.
 
-   Or, for MacPorts::
+   O, para MacPorts::
 
      port install argp-standalone
 
-   See https://trac.macports.org/browser/trunk/dports/sysutils/f3/Portfile
-   for more information.
+   Vea https://trac.macports.org/browser/trunk/dports/sysutils/f3/Portfile
+   para más información.
 
-4) Build F3::
+4) Construir F3::
 
-   When using Homebrew, you can just run::
+   Al usar Homebrew, puedes simplemente correr::
 
        make
 
-   When using MacPorts, you will need to pass the location where MacPorts
-   installed argp-standalone::
+   Al utilizar MacPorts, deberá pasar la ubicación donde MacPorts 
+   instaló el argp-standalone::
 
        make ARGP=/opt/local
 
 Docker
 ------
 
-Quick Start
+Inicio rápido
 ~~~~~~~~~~~
 
-A pre-built `image <https://cloud.docker.com/repository/docker/peron/f3>`__
-is available over at Docker Hub, ready to be used.  With docker started, just
-run::
+Una imagen precompilada `imágen <https://cloud.docker.com/repository/docker/peron/f3>`__
+está disponible en Docker Hub, listo para usarse. 
+Con docker iniciado, simplemente ejecute::
 
-    docker run -it --rm --device <device> peron/f3 <f3-command> [<f3-options>] <device>
+    docker run -it --rm --device <device> peron/f3 <f3-command> [<f3-options>] <dispositivo>
 
-For example, to probe a drive mounted at /dev/sdb::
+Por ejemplo, para probar una unidad montada en /dev/sdb::
 
     docker run -it --rm --device /dev/sdb peron/f3 f3probe --destructive --time-ops /dev/sdb
 
-Optionally, you can also build your own container *if* you don't want to use the
-pre-built image.  From this directory, run::
+Opcionalmente, también puede crear su propio contenedor  *si* no desea usar 
+la imagen precompilado. Desde este directorio, ejecute::
 
     docker build -t f3:latest .
-    docker run -it --rm --device <device> f3:latest <f3-command> [<f3-options>] <device>
+    docker run -it --rm --device <device> f3:latest <f3-command> [<f3-options>] <dispositivo>
 
-Drive Permissions / Passthrough
+Permisos de unidad / Passthrough
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Getting the drive device to map into the Docker container is tricky for Mac and
-Windows.  Passing through devices on Mac and Windows is a well-documented issue
+Conseguir que el dispositivo de la unidad se mapee en el contenedor del Docker es difícil para Mac y
+Windows.  Pasar a través de los dispositivos en Mac y Windows es un asunto bien documentado 
 (`[github]
 <https://github.com/docker/for-mac/issues/3110#issuecomment-456853036>`__
 `[stackexchange]
 <https://devops.stackexchange.com/questions/4572/how-to-pass-a-dev-disk-device-on-macos-into-linux-docker/6076#6076>`__
 `[tty]
 <https://christopherjmcclellan.wordpress.com/2019/04/21/using-usb-with-docker-for-mac/#tldr>`__)
-On Linux it should just work, but on Mac or Windows, Docker tends to map the
-drive as a normal directory rather than a mounted drive and you will get an
-error like :code:`f3probe: Can't open device '/opt/usb': Is a directory`, that
-is if you can map it at all.
+En Linux debería funcionar, pero en Mac o Windows, Docker tiende a mapear 
+la unidad como un directorio normal en lugar de una unidad montada y obtendrá 
+un error como :code:`f3probe: Can't open device '/opt/usb': Is a directory`, eso 
+si es que consigue mapearlo.
 
-To solve this, we can use docker-machine to create a VirtualBox VM
-(boot2docker), in which to run the Docker container.  Since VirtualBox *can*
-handle device pass-through, we can pass the device through to the VirtualBox VM
-which can then pass the device through to the Docker container.  Milad Alizadeh
-wrote up some good instructions `here
+Para resolver esto, podemos usar docker-machine para crear una máquina virtual en VirtualBox 
+(boot2docker), en la que ejecutar el contenedor de Docker. Dado que VirtualBox *puede* 
+controlar el paso a través del dispositivo, podemos pasar el dispositivo a través de la máquina virtual VirtualBox 
+que, a continuación, puede pasar el dispositivo al contenedor de Docker. Milad Alizadeh 
+escribió algunas buenas instrucciones `Aquí
 <https://mil.ad/docker/2018/05/06/access-usb-devices-in-container-in-mac.html>`__
-which are geared towards USB devices, but it shouldn't be too hard to adapt to
-other drive types.  Here's what I typed into my Mac terminal (probably
-similar for Windows, but untested)::
+que están orientadas a dispositivos USB, pero no debería ser demasiado difícil adaptarse a 
+otros tipos de unidades. Esto es lo que he escrito en mi terminal Mac (probablemente 
+similar para Windows, pero sin probar)::
 
     docker-machine create -d virtualbox default
     docker-machine stop
@@ -234,124 +234,124 @@ similar for Windows, but untested)::
     eval $(docker-machine env default)
 
 
-For the usbfilter add command, note that the "name" argument is the new name
-you're giving the filter so you can name it whatever you want.
-:code:`--vendorid` and :code:`--productid` can be found on Mac in "System
-Information" under "USB". You can also try searching for the right device in
+Para el comando add de usbfilter, tenga en cuenta que el argumento "name" es el nuevo nombre 
+que le da al filtro así que puede nombrarlo como quiera.
+:code:`--vendorid` y :code:`--productid` se pueden encontrar en Mac en  "System
+Information" bajo "USB". También puedes intentar buscar el dispositivo correcto en 
 :code:`vboxmanage list usbhost`.
 
-Alternatively, you may opt to add the device through the VirtualBox GUI
-application instead::
+Alternativamente, puedes optar por añadir el dispositivo a través de la GUI 
+de Virtualbox ::
 
     docker-machine create -d virtualbox default
     docker-machine stop
-    # open VirtualBox and manually add the drive device before proceeding to the next command
+    # abra VirtualBox y agrege manualmente el dispositivo antes de ejecutar el siguiente comando
     docker-machine start
     eval $(docker-machine env default)
 
-Once you've run the above commands, unplug and replug the flash drive and run::
+Una vez que haya ejecutado los comandos anteriores, desenchufe y vuelva a conectar la unidad flash y ejecute::
 
     docker-machine ssh default "lsblk"
 
-to list the devices. Search for the correct drive - the "SIZE" column may be
-helpful in locating the device of interest. For example, :code:`sdb` is a common
-mount point for a USB drive.  Now you should be able to run the command from
-Quick Start::
+para listar los dispositivos. Busque la unidad correcta: la columna "SIZE" puede ser 
+útil para localizar el dispositivo de interés. Por ejemplo, :code:`sdb` es un punto de montaje 
+común para una unidad USB. Ahora usted debe ser capaz de ejecutar el comando de 
+inicio rápido::
 
     docker run --rm -it --device /dev/sdb peron/f3 f3probe --destructive --time-ops /dev/sdb
 
-You may find it useful to enter a bash prompt in the Docker container to poke
-around the filesystem::
+Puede resultar útil introducir un mensaje bash en el contenedor de Docker para 
+buscar en el sistema de archivos::
 
     docker run --rm -it --device /dev/sdb peron/f3 bash
 
-so that you can run commands like :code:`ls /dev/*`.
+para que pueda ejecutar comandos como  :code:`ls /dev/*`.
 
-The extra applications for Linux
+Aplicaciones adicionales para Linux
 --------------------------------
 
-Install dependencies
+Instalar dependencias
 ~~~~~~~~~~~~~~~~~~~~
 
-f3probe and f3brew require version 1 of the library libudev, and f3fix
-requires version 0 of the library libparted to compile. On Ubuntu, you
-can install these libraries with the following command::
+f3probe y f3brew requieren la versión 1 de la biblioteca libudev, y f3fix 
+requiere la versión 0 de la biblioteca libparted para compilar. En Ubuntu, 
+puede instalar estas bibliotecas con el siguiente comando::
 
     sudo apt-get install libudev1 libudev-dev libparted-dev
 
-If you are running a version of Ubuntu before 20.04.1, replace the package `libparted-dev`
-on the command line above with `libparted0-dev`.
+Si está ejecutando una versión de Ubuntu anterior a 20.04.1, reemplace el paquete `libparted-dev`
+en la línea de comandos anterior con `libparted0-dev`.
 
-On Fedora, you can install these libraries with the following command::
+En Fedora, puede instalar estas bibliotecas con el siguiente comando::
 
     sudo dnf install systemd-devel parted-devel
 
-Compile the extra applications
+Compilar las aplicaciones adicionales
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
     make extra
 
-.. note::
-   - The extra applications are only compiled and tested on Linux
-     platform.
-   - Please do not e-mail me saying that you want the extra
-     applications to run on your platform; I already know that.
-   - If you want the extra applications to run on your platform, help
-     to port them, or find someone that can port them for you. If you
-     do port any of them, please send me a patch to help others.
-   - The extra applications are f3probe, f3brew, and f3fix.
+.. nota::
+   - Las aplicaciones adicionales solo se compilan y prueban en  
+	 Linux.
+   - Por favor, no me envíe un correo electrónico diciendo que desea que las 
+	 aplicaciones adicionales se ejecuten en su plataforma; Ya lo sé.
+   - Si desea que las aplicaciones adicionales se ejecuten en su plataforma, 
+	 ayúdelas a portar o a encontrar a alguien que pueda portarlas por usted. 
+	 Si portan alguna de ellas, por favor envíenme el parche para ayudar a los demás.
+   - Las aplicaciones adicionales son f3probe, f3brew y f3fix.
 
-If you want to install the extra applications, run the following
-command::
+Si quieres instalar las aplicaciones extra, ejecuta el siguiente 
+comando::
 
     make install-extra
 
-Other resources
+Otros recursos
 ===============
 
-Graphical User Interfaces
+Interfaces gráficas
 -------------------------
 
-Thanks to our growing community of flash fraud fighters,
-we have the following graphical user interfaces (GUI) available for F3:
+Gracias a nuestra creciente comunidad de luchadores contra el fraude flash, tenemos las siguientes 
+interfaces gráficas (GUI) disponibles para F3:
 
-`F3 QT <https://github.com/zwpwjwtz/f3-qt>`__ is a Linux GUI that uses
-QT. F3 QT supports ``f3write``, ``f3read``, ``f3probe``, and ``f3fix``. Author:
+`F3 QT <https://github.com/zwpwjwtz/f3-qt>`__ es una GUI para Linux que usa
+QT. F3 QT soporta ``f3write``, ``f3read``, ``f3probe``, y ``f3fix``. Autor:
 Tianze.
 
-Please support the above project by testing it and giving feedback to their
-authors. This will make their code improve as it has improved mine.
+Por favor, apoye el proyecto anterior probándolo y dando retroalimentación 
+a sus autores. Esto hará que su código mejore como ha mejorado el mío.
 
-Files
+Archivos
 -----
 
 ::
 
-    changelog   - Change log for package maintainers
-    f3read.1    - Man page for f3read and f3write
-                In order to read this manual page, run `man ./f3read.1`
-                To install the page, run
+    changelog   - Registro de cambios para los mantenedores de paquetes
+    f3read.1    - Página de manuales para f3read y f3write
+                Para leer esta página del manual, ejecute  `man ./f3read.1`
+                Para instalar la página, ejecute
                 `install --owner=root --group=root --mode=644 f3read.1 /usr/share/man/man1`
-    LICENSE     - License (GPLv3)
-    Makefile    - make(1) file
-    README      - This file
+    LICENSE     - Licencia (GPLv3)
+    Makefile    - archivo make(1)
+    README      - Este archivo
     *.h and *.c - C code of F3
 
-Bash scripts
+Scripts de Bash
 ------------
 
-Although the simple scripts listed in this section are ready for use,
-they are really meant to help you to write your own scripts. So you can
-personalize F3 to your specific needs::
+Aunque los scripts simples enumerados en esta sección están listos para su uso, 
+realmente están diseñados para ayudarle a escribir sus propios scripts. Así que 
+puede personalizar F3 a sus necesidades específicas::
 
-    f3write.h2w - Script to create files exactly like H2testw.
-        Use example: `f3write.h2w /media/michel/5EBD-5C80/`
+    f3write.h2w - Script para crear archivos exactamente como H2testw.
+        Ejemplo:  `f3write.h2w /media/michel/5EBD-5C80/`
 
-    log-f3wr    - Script that runs f3write and f3read, and records
-                  their output into a log file.
-        Use example: `log-f3wr log-filename /media/michel/5EBD-5C80/`
+    log-f3wr    - Script que ejecuta f3write y f3read, y registra  
+                  su salida en un archivo de registro.
+        Ejemplo: `log-f3wr log-filename /media/michel/5EBD-5C80/`
 
-Please notice that all scripts and use examples above assume that
-f3write, f3read, and the scripts are in the same folder.
+Tenga en cuenta que todos los scripts y ejemplos de uso anteriores asumen 
+que f3write, f3read y los scripts están en la misma carpeta.
